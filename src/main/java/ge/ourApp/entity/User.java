@@ -1,6 +1,5 @@
 package ge.ourApp.entity;
 
-import ge.ourApp.enums.Role;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 import lombok.*;
@@ -19,7 +18,6 @@ import java.util.Collection;
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    @Column(name = "user_id")
     private Long id;
 
     @Column(name = "first_name", nullable = false)
@@ -30,11 +28,11 @@ public class User implements UserDetails {
     @Size(max = 100)
     private String lastName;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    @ManyToOne
+    @JoinColumn(nullable = false,name="role_id")
     private Role role;
 
-    @Column(nullable = false)
+    @Column(nullable = false,unique = true)
     @Size(max = 100)
     private String login;
 
@@ -49,7 +47,7 @@ public class User implements UserDetails {
 
     @Override
     public String getUsername() {
-        return this.firstName;
+        return this.login;
     }
 
     @Override

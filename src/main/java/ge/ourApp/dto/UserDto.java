@@ -1,7 +1,6 @@
 package ge.ourApp.dto;
 
 
-import ge.ourApp.enums.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -17,6 +16,6 @@ public class UserDto {
     private String firstName;
     private String lastName;
     private String login;
-    private Role role;
+    private String role;
     private String token;
 }

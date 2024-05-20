@@ -1,7 +1,8 @@
 package ge.ourApp;
 
+import ge.ourApp.entity.Role;
 import ge.ourApp.entity.User;
-import ge.ourApp.enums.Role;
+import ge.ourApp.repository.RoleRepository;
 import ge.ourApp.repository.UserRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -18,14 +19,25 @@ public class OurAppApplication {
 
 
     @Bean
-    CommandLineRunner run(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    CommandLineRunner run(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
         return args -> {
+            Role roleAdmin = Role.builder()
+                    .authority("ADMIN")
+                    .build();
+
+            Role roleUSer = Role.builder()
+                    .authority("User")
+                    .build();
+
+            roleRepository.save(roleAdmin);
+            roleRepository.save(roleUSer);
+
             User user = User.builder()
                     .firstName("Toko")
                     .lastName("Toko")
                     .login("Toko")
                     .password(passwordEncoder.encode("Toko"))
-                    .role(Role.ADMIN)
+                    .role(roleAdmin)
                     .build();
 
             userRepository.save(user);

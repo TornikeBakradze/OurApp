@@ -1,10 +1,12 @@
 package ge.ourApp.service;
 
 import ge.ourApp.dto.SignUpDto;
+import ge.ourApp.entity.Role;
 import ge.ourApp.entity.User;
-import ge.ourApp.enums.Role;
+import ge.ourApp.repository.RoleRepository;
 import ge.ourApp.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -16,14 +18,18 @@ import org.springframework.stereotype.Service;
 public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
+    private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
 
     public User register(SignUpDto userDto) {
+
+        Role role = roleRepository.findByAuthority("USER");
+
         User user = User.builder()
-                .role(Role.USER)
-                .firstName(userDto.getLogin())
+                .role(role)
+                .firstName(userDto.getFirstName())
                 .lastName(userDto.getLastName())
-                .login(userDto.getFirstName())
+                .login(userDto.getLogin())
                 .password(passwordEncoder.encode(userDto.getPassword()))
                 .build();
 
@@ -33,6 +39,6 @@ public class UserService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         System.out.println("In the user details service");
-        return userRepository.findByFirstName(username).orElseThrow(() -> new RuntimeException("user not found"));
+        return userRepository.findByLogin(username).orElseThrow(() -> new UsernameNotFoundException("user not found"));
     }
 }
