@@ -10,6 +10,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @SpringBootApplication
 public class OurAppApplication {
 
@@ -26,18 +29,21 @@ public class OurAppApplication {
                     .build();
 
             Role roleUSer = Role.builder()
-                    .authority("User")
+                    .authority("USER")
                     .build();
 
             roleRepository.save(roleAdmin);
             roleRepository.save(roleUSer);
+
+            Set<Role> authorities = new HashSet<>();
+            authorities.add(roleAdmin);
 
             User user = User.builder()
                     .firstName("Toko")
                     .lastName("Toko")
                     .login("Toko")
                     .password(passwordEncoder.encode("Toko"))
-                    .role(roleAdmin)
+                    .authorities(authorities)
                     .build();
 
             userRepository.save(user);
