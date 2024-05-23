@@ -22,20 +22,24 @@ public class User implements UserDetails {
     private Long id;
 
     @Column(name = "first_name", nullable = false)
-    @Size(max = 100)
-    private String firstName;
+    @Size(max = 200)
+    private String firstname;
 
     @Column(name = "last_name", nullable = false)
-    @Size(max = 100)
-    private String lastName;
+    @Size(max = 300)
+    private String lastname;
 
-    @Column(nullable = false,unique = true)
-    @Size(max = 100)
+    @Column(nullable = false, unique = true)
+    @Size(max = 300)
     private String email;
 
     @Column(nullable = false)
-    @Size(max = 100)
+    @Size(max = 300)
     private String password;
+
+    @Column(nullable = false)
+    @Size(min = 9, max = 9)
+    private String phoneNumber;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(

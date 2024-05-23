@@ -1,6 +1,8 @@
 package ge.ourApp.dto;
 
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,15 +15,37 @@ import lombok.NoArgsConstructor;
 public class SignUpDto {
 
     @NotEmpty
-    private String firstName;
+    @Pattern(regexp = "^[a-zA-Z]+$",
+            message = "The name must contain only letters")
+    @Size(max = 200, message = "The size of the name is large")
+    private String firstname;
 
     @NotEmpty
+    @Pattern(regexp = "^[a-zA-Z()]+$",
+            message = "The lastname must contain only letters")
+    @Size(max = 300,
+            message = "The size of the lastname is large")
     private String lastName;
 
     @NotEmpty
-    private String login;
+    @Pattern(regexp = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$",
+            message = "Invalid email address")
+    @Size(max = 300,
+            message = "The size of the email is large")
+    private String email;
 
     @NotEmpty
+    @Pattern(regexp =
+            "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])(?!.*\\s)[A-Za-z\\d@$!%*?&]{8,}$",
+            message = "Password must be at least 8 characters long and contain at least" +
+                    " one lowercase letter, one uppercase letter, one digit, one special character, and no spaces.")
+    @Size(max = 300,
+            message = "The size of the password is large")
     private String password;
+
+    @NotEmpty(message = "Phone number is required")
+    @Pattern(regexp = "^[0-9]+$", message = "Phone number must contain only digits")
+    @Size(min = 9, max = 9, message = "Phone number size must be 9 digits")
+    private String phonenumber;
 
 }

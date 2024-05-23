@@ -34,7 +34,6 @@ public class AuthenticationService {
 
 
     public User register(SignUpDto userDto) {
-
         Role role = roleRepository.findByAuthority("USER");
 
         Set<Role> authorities = new HashSet<>();
@@ -42,30 +41,30 @@ public class AuthenticationService {
 
         User user = User.builder()
                 .authorities(authorities)
-                .firstName(userDto.getFirstName())
-                .lastName(userDto.getLastName())
-                .email(userDto.getLogin())
+                .firstname(userDto.getFirstname())
+                .lastname(userDto.getLastName())
+                .email(userDto.getEmail())
                 .password(passwordEncoder.encode(userDto.getPassword()))
                 .build();
 
         return userRepository.save(user);
+
     }
 
     public UserDto loginUser(LoginDto loginDto) {
         try {
             Authentication auth = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(loginDto.getUsername(),loginDto.getPassword())
+                    new UsernamePasswordAuthenticationToken(loginDto.getUsername(), loginDto.getPassword())
             );
 
-            User user= (User) auth.getPrincipal();
+            User user = (User) auth.getPrincipal();
 
             String token = tokenService.generateJwt(auth);
             return UserDto.builder()
-                    .firstName(user.getFirstName())
+                    .firstName(user.getFirstname())
                     .token(token)
                     .build();
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             throw new AppException(e.getMessage(), HttpStatus.NOT_FOUND);
         }
 

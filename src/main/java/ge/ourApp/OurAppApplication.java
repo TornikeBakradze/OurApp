@@ -39,10 +39,11 @@ public class OurAppApplication {
             authorities.add(roleAdmin);
 
             User user = User.builder()
-                    .firstName("Toko")
-                    .lastName("Toko")
+                    .firstname("Toko")
+                    .lastname("Toko")
                     .email("Toko")
                     .password(passwordEncoder.encode("Toko"))
+                    .phoneNumber("111111111")
                     .authorities(authorities)
                     .build();
 
