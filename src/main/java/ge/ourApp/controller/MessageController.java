@@ -1,6 +1,6 @@
 package ge.ourApp.controller;
 
-import ge.ourApp.service.EmailService;
+import ge.ourApp.service.MailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class MessageController {
 
-    private final EmailService emailService;
+    private final MailService mailService;
 
     @GetMapping("/admin")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -27,7 +27,7 @@ public class MessageController {
 
     @PostMapping("/sendEmail")
     public void sendEmail() {
-        emailService.sendMail();
+        mailService.sendMail();
     }
 
 

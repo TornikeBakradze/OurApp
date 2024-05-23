@@ -4,14 +4,13 @@ import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class EmailService {
+public class MailService {
 
     private final JavaMailSender javaMailSender;
 
@@ -20,22 +19,16 @@ public class EmailService {
     @Value("$(toko)")
     private String fromEmail;
 
-    public void sendMail()  {
-//        SimpleMailMessage message = new SimpleMailMessage();
-//        message.setFrom(fromEmail);
-//        message.setTo(EMAIL);
-//        message.setSubject("Confim link");
-//        message.setText("Hello toko from youApp " +
-//                "if you like this click http://localhost:8080/no");
-//        javaMailSender.send(message);
+    public void sendMail() {
 
         MimeMessage message = javaMailSender.createMimeMessage();
-        MimeMessageHelper helper = null;
+        MimeMessageHelper helper;
         try {
-            helper = new MimeMessageHelper(message, true);helper.setFrom(fromEmail);
+            helper = new MimeMessageHelper(message, true);
+            helper.setFrom(fromEmail);
             helper.setTo(EMAIL);
             helper.setSubject("Confirm link");
-            helper.setText("<html><body><a href=\"http://localhost:8080/yes\">Yes</a></body></html>", true);
+            helper.setText("<!DOCTYPE html><html><head><title>Hello Toko</title></head><body><h1>Hello Toko</h1><a href=\"http://localhost:8080/yes\">Yes</a><img src=\"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT-NSEUHWmQsGxt4SfVM3f8VMW7vN8JsHnL-CnVII5E4A&s\" alt=\"Image\"></body></html>\n", true);
         } catch (MessagingException e) {
             throw new RuntimeException(e);
         }
