@@ -29,6 +29,14 @@ public class User implements UserDetails {
     @Size(max = 100)
     private String lastName;
 
+    @Column(nullable = false,unique = true)
+    @Size(max = 100)
+    private String email;
+
+    @Column(nullable = false)
+    @Size(max = 100)
+    private String password;
+
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "user_role_junction",
@@ -37,14 +45,6 @@ public class User implements UserDetails {
     )
     private Set<Role> authorities;
 
-    @Column(nullable = false,unique = true)
-    @Size(max = 100)
-    private String login;
-
-    @Column(nullable = false)
-    @Size(max = 100)
-    private String password;
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return this.authorities;
@@ -52,7 +52,7 @@ public class User implements UserDetails {
 
     @Override
     public String getUsername() {
-        return this.login;
+        return this.email;
     }
 
     @Override

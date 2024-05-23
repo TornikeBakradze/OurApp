@@ -15,8 +15,8 @@ public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
 
-    public UserDetails loadUserByUsername(String username) {
-        return userRepository.findByLogin(username)
-                .orElseThrow(() -> new AppException("Unknown user", HttpStatus.NOT_FOUND));
+    public UserDetails loadUserByUsername(String email) {
+        return userRepository.findByEmail(email)
+                .orElseThrow(() -> new AppException("User doesn't exist", HttpStatus.NOT_FOUND));
     }
 }

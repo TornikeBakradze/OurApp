@@ -41,7 +41,7 @@ public class OurAppApplication {
             User user = User.builder()
                     .firstName("Toko")
                     .lastName("Toko")
-                    .login("Toko")
+                    .email("Toko")
                     .password(passwordEncoder.encode("Toko"))
                     .authorities(authorities)
                     .build();

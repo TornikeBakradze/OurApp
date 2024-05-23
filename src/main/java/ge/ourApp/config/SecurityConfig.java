@@ -61,7 +61,7 @@ public class SecurityConfig {
                                 .anyRequest().permitAll())
                 .oauth2ResourceServer((oauth2) -> oauth2
                         .jwt(jwt -> jwtAuthenticationConverter()))
-                .exceptionHandling((ex)->ex
+                .exceptionHandling((ex) -> ex
                         .accessDeniedHandler(accessDeniedHandler()));
         return http.build();
     }
@@ -77,6 +77,8 @@ public class SecurityConfig {
         JWKSource<SecurityContext> jwks = new ImmutableJWKSet<>(new JWKSet(jwk));
         return new NimbusJwtEncoder(jwks);
     }
+
+
 
     @Bean
     public JwtAuthenticationConverter jwtAuthenticationConverter() {

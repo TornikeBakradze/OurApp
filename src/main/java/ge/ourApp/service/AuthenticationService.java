@@ -44,7 +44,7 @@ public class AuthenticationService {
                 .authorities(authorities)
                 .firstName(userDto.getFirstName())
                 .lastName(userDto.getLastName())
-                .login(userDto.getLogin())
+                .email(userDto.getLogin())
                 .password(passwordEncoder.encode(userDto.getPassword()))
                 .build();
 
@@ -57,8 +57,11 @@ public class AuthenticationService {
                     new UsernamePasswordAuthenticationToken(loginDto.getUsername(),loginDto.getPassword())
             );
 
+            User user= (User) auth.getPrincipal();
+
             String token = tokenService.generateJwt(auth);
             return UserDto.builder()
+                    .firstName(user.getFirstName())
                     .token(token)
                     .build();
         }
