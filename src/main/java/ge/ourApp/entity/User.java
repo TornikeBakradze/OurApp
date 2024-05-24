@@ -3,11 +3,15 @@ package ge.ourApp.entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.Set;
+import java.util.UUID;
 
 @Entity
 @AllArgsConstructor
@@ -41,6 +45,10 @@ public class User implements UserDetails {
     @Size(min = 9, max = 9)
     private String phoneNumber;
 
+    private UUID confirmUUID;
+
+    private boolean isEnable;
+
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "user_role_junction",
@@ -48,6 +56,13 @@ public class User implements UserDetails {
             inverseJoinColumns = {@JoinColumn(name = "role_id")}
     )
     private Set<Role> authorities;
+
+    @CreationTimestamp
+    @Column(updatable = false)
+    private Timestamp createDate;
+
+    @UpdateTimestamp
+    private Timestamp lastModifiedDate;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -76,6 +91,6 @@ public class User implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return this.isEnable;
     }
 }

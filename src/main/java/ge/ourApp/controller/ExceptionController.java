@@ -31,7 +31,7 @@ public class ExceptionController {
 
     @ExceptionHandler(value = {AppException.class})
     @ResponseBody
-    public ResponseEntity<String> handleException(AppException ex) {
+    public ResponseEntity<String> handleAppException(AppException ex) {
         return ResponseEntity
                 .status(ex.getStatus())
                 .body(ex.getMessage());
