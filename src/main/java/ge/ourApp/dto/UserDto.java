@@ -1,12 +1,14 @@
 package ge.ourApp.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Builder;
 
 @Builder
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public record UserDto(
-         String firstName,
-         String lastName,
-         String login,
-         String role,
-         String token) {
+        String firstName,
+        String lastName,
+        String email,
+        String phoneNumber,
+        String token) {
 }

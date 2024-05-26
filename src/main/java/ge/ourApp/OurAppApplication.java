@@ -45,6 +45,7 @@ public class OurAppApplication {
                     .password(passwordEncoder.encode("Toko"))
                     .phoneNumber("111111111")
                     .authorities(authorities)
+                    .isEnable(true)
                     .build();
 
             userRepository.save(user);
