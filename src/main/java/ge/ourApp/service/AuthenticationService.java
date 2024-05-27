@@ -86,14 +86,14 @@ public class AuthenticationService {
     public UserDto loginUser(LoginDto loginDto) {
         try {
             Authentication auth = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(loginDto.getUsername(), loginDto.getPassword())
+                    new UsernamePasswordAuthenticationToken(loginDto.getEmail(), loginDto.getPassword())
             );
 
             User user = (User) auth.getPrincipal();
 
             String token = tokenService.generateJwt(auth);
             return UserDto.builder()
-                    .firstName(user.getFirstname())
+                    .firstname(user.getFirstname())
                     .token(token)
                     .build();
         } catch (Exception e) {
