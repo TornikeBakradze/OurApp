@@ -26,9 +26,12 @@ public class ImageService {
     private String imagePath;
 
     public String uploadImage(MultipartFile file, Long userId) {
-
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new AppException("User Not Found", HttpStatus.BAD_REQUEST));
+
+        if (!user.isEnable()) {
+            throw new AppException("User is not enabled", HttpStatus.BAD_REQUEST);
+        }
 
         String folderPath = imagePath;
 
@@ -43,7 +46,8 @@ public class ImageService {
         } catch (IOException e) {
             throw new AppException(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
-
+        user.setImageName(fileName);
+        userRepository.save(user);
         return "Image uploaded successfully";
     }
 
@@ -58,5 +62,34 @@ public class ImageService {
         } catch (IOException e) {
             throw new AppException(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    public String deleteImage(String name) {
+        String folderPath = Paths.get(imagePath).toString();
+        String filePath = folderPath + File.separator + name;
+
+        Path path = Paths.get(filePath);
+
+        try {
+            Files.delete(path);
+            return "Image deleted successfully";
+        } catch (IOException e) {
+            throw new AppException(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public String updateImage(MultipartFile file, Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new AppException("User Not Found", HttpStatus.BAD_REQUEST));
+
+        if (!user.isEnable()) {
+            throw new AppException("User is not enabled", HttpStatus.BAD_REQUEST);
+        }
+
+        deleteImage(user.getImageName());
+
+        uploadImage(file, user.getId());
+
+        return "Image updated successfully";
     }
 }

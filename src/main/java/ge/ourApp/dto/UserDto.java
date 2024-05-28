@@ -1,6 +1,7 @@
 package ge.ourApp.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import ge.ourApp.enums.Gender;
 import lombok.Builder;
 
 @Builder
@@ -10,5 +11,6 @@ public record UserDto(
         String lastname,
         String email,
         String phoneNumber,
+        Gender gender,
         String token) {
 }

@@ -6,6 +6,7 @@ import ge.ourApp.dto.SignUpDto;
 import ge.ourApp.dto.UserDto;
 import ge.ourApp.entity.Role;
 import ge.ourApp.entity.User;
+import ge.ourApp.enums.Gender;
 import ge.ourApp.exceptions.AppException;
 import ge.ourApp.repository.RoleRepository;
 import ge.ourApp.repository.UserRepository;
@@ -38,7 +39,7 @@ public class AuthenticationService {
     private final MailService mailService;
 
 
-    public User register(SignUpDto userDto) {
+    public String register(SignUpDto userDto) {
 
         Role role = roleRepository.findByAuthority("USER")
                 .orElseThrow(() -> new AppException("Role does not exist", HttpStatus.BAD_REQUEST));
@@ -60,6 +61,8 @@ public class AuthenticationService {
                 .email(userDto.getEmail())
                 .password(passwordEncoder.encode(userDto.getPassword()))
                 .phoneNumber(userDto.getPhoneNumber())
+                .gender(userDto.getGender()
+                        .equalsIgnoreCase("MALE") ? Gender.MALE : Gender.FEMALE)
                 .confirmUUID(uuid)
                 .isEnable(false)
                 .build();
@@ -69,8 +72,8 @@ public class AuthenticationService {
                 .userEmail(userDto.getEmail())
                 .confirmLinkUUID(uuid)
                 .build());
-
-        return userRepository.save(user);
+        userRepository.save(user);
+        return "User registered successfully. Please check your email to verify your account";
     }
 
     public String confirmUser(String uuid) {
@@ -92,8 +95,13 @@ public class AuthenticationService {
             User user = (User) auth.getPrincipal();
 
             String token = tokenService.generateJwt(auth);
+
             return UserDto.builder()
                     .firstname(user.getFirstname())
+                    .lastname(user.getLastname())
+                    .email(user.getEmail())
+                    .phoneNumber(user.getPhoneNumber())
+                    .gender(user.getGender())
                     .token(token)
                     .build();
         } catch (Exception e) {

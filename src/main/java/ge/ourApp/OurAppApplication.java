@@ -2,6 +2,7 @@ package ge.ourApp;
 
 import ge.ourApp.entity.Role;
 import ge.ourApp.entity.User;
+import ge.ourApp.enums.Gender;
 import ge.ourApp.repository.RoleRepository;
 import ge.ourApp.repository.UserRepository;
 import org.springframework.boot.CommandLineRunner;
@@ -45,6 +46,7 @@ public class OurAppApplication {
                     .password(passwordEncoder.encode("Toko"))
                     .phoneNumber("111111111")
                     .authorities(authorities)
+                    .gender(Gender.MALE)
                     .isEnable(true)
                     .build();
 

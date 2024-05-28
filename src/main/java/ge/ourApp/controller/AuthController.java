@@ -3,7 +3,6 @@ package ge.ourApp.controller;
 import ge.ourApp.dto.LoginDto;
 import ge.ourApp.dto.SignUpDto;
 import ge.ourApp.dto.UserDto;
-import ge.ourApp.entity.User;
 import ge.ourApp.service.AuthenticationService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +16,7 @@ public class AuthController {
     private final AuthenticationService authenticationService;
 
     @PostMapping("/regster")
-    public ResponseEntity<User> register(@RequestBody @Valid SignUpDto user) {
+    public ResponseEntity<String> register(@RequestBody @Valid SignUpDto user) {
         return ResponseEntity.ok(authenticationService.register(user));
     }
 

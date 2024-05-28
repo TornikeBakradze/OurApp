@@ -1,5 +1,6 @@
 package ge.ourApp.entity;
 
+import ge.ourApp.enums.Gender;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 import lombok.*;
@@ -44,6 +45,11 @@ public class User implements UserDetails {
     @Column(nullable = false)
     @Size(min = 9, max = 9)
     private String phoneNumber;
+
+    @Enumerated(value = EnumType.STRING)
+    private Gender gender;
+
+    private String imageName;
 
     private UUID confirmUUID;
 

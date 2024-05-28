@@ -48,4 +48,8 @@ public class SignUpDto {
     @Size(min = 9, max = 9, message = "Phone number size must be 9 digits")
     private String phoneNumber;
 
+    @NotEmpty(message = "Gender is required")
+    @Pattern(regexp = "^[a-zA-Z]+$", message = "Gender can be Female or Male")
+    private String gender;
+
 }
