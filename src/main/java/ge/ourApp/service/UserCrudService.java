@@ -3,6 +3,7 @@ package ge.ourApp.service;
 import ge.ourApp.dto.SignUpDto;
 import ge.ourApp.dto.UserDto;
 import ge.ourApp.entity.User;
+import ge.ourApp.enums.Gender;
 import ge.ourApp.exceptions.AppException;
 import ge.ourApp.mappers.UserMapper;
 import ge.ourApp.repository.UserRepository;
@@ -30,7 +31,7 @@ public class UserCrudService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new AppException("User not found", HttpStatus.BAD_REQUEST));
 
-        if(!user.isEnable()){
+        if (!user.isEnable()) {
             throw new AppException("User is not enabled", HttpStatus.BAD_REQUEST);
         }
 
@@ -41,7 +42,7 @@ public class UserCrudService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new AppException("User not found", HttpStatus.BAD_REQUEST));
 
-        if(!user.isEnable()){
+        if (!user.isEnable()) {
             throw new AppException("User is not enabled", HttpStatus.BAD_REQUEST);
         }
 
@@ -50,6 +51,8 @@ public class UserCrudService {
         user.setEmail(signUpDto.getEmail());
         user.setPassword(passwordEncoder.encode(signUpDto.getPassword()));
         user.setPhoneNumber(signUpDto.getPhoneNumber());
+        user.setGender(signUpDto.getGender()
+                .equalsIgnoreCase("MALE") ? Gender.MALE : Gender.FEMALE);
 
         User savedUser = userRepository.save(user);
         return userMapper.userToUserDto(savedUser);
